@@ -1,10 +1,10 @@
 package main
 
-import (
-	"example/study/contextsty"
-)
+import "example/plugin/vipersty"
 
 func main() {
-	contextsty.ContextWithCancelDemo()
+	//contextsty.ContextWithCancelDemo()
+	//contextsty.ContextWithTimeOutDemo()
+	vipersty.Demo2()
 }
 

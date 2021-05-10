@@ -34,3 +34,24 @@ func ContextWithCancelDemo() {
 	time.Sleep(1 * time.Second)
 	fmt.Println("end.")
 }
+
+func ContextWithTimeOutDemo(){
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	go func(ctx context.Context) {
+		var i = 1
+		for{
+			time.Sleep(1 * time.Second)
+			select {
+			case <- ctx.Done():
+				fmt.Println("done")
+				return
+			default:
+				fmt.Printf("work %d seconds: \n", i)
+			}
+			i++
+		}
+	}(ctx)
+	//模拟程序运行 - Sleep 10秒
+	time.Sleep(10 * time.Second)
+	cancel() // 3秒后将提前取消 doSth goroutine
+}

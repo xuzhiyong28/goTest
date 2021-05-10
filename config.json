@@ -1,0 +1,24 @@
+{
+  "settings":{
+    "application":{
+      "domain":"localhost:8002",
+      "host":"0.0.0.0",
+      "ishttps":false,
+      "mode":"dev",
+      "name":"xuzy",
+      "port":"8002",
+      "readtimeout":1
+    },
+    "database":{
+      "dbtype":"mysql",
+      "host":"127.0.0.1",
+      "name":"ferry",
+      "password":"your password",
+      "port":3306,
+      "username":"ferry"
+    }
+  },
+  "otherset":{
+    "company":"HuoShan"
+  }
+}
