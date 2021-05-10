@@ -100,5 +100,29 @@ func Demo2(){
 	}else{
 		fmt.Println(testViper.GetString("otherset.company"))
 	}
+}
 
+//配置写入配置文件中
+//下面的配置会被写入到config.toml中去 我们可以用这个功能来做配置文件的生成
+func Demo3(){
+	path, _ := os.Getwd()
+	testViper := viper.New()
+	testViper.SetConfigName("config")
+	testViper.SetConfigType("toml")
+	testViper.AddConfigPath(path)
+	testViper.Set("app_name", "awesome web")
+	testViper.Set("log_level", "DEBUG")
+	testViper.Set("mysql.ip", "127.0.0.1")
+	testViper.Set("mysql.port", 3306)
+	testViper.Set("mysql.user", "root")
+	testViper.Set("mysql.password", "123456")
+	testViper.Set("mysql.database", "awesome")
+
+	testViper.Set("redis.ip", "127.0.0.1")
+	testViper.Set("redis.port", 6381)
+
+	err := testViper.SafeWriteConfig()
+	if err != nil {
+		fmt.Println(err)
+	}
 }
