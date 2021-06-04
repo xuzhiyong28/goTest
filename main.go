@@ -1,6 +1,6 @@
 package main
 
-import "example/study/blockchain"
+import "example/study/blockchain/pos"
 
 func main() {
 	//contextsty.ContextWithCancelDemo()
@@ -8,6 +8,7 @@ func main() {
 	//vipersty.Demo2()
 	//vipersty.Demo3()
 
-	blockchain.DoTestPow_1()
+	//pow.DoTestPow_1()
+	pos.DoTestPos_1()
 }
 

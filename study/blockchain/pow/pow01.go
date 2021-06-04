@@ -1,4 +1,4 @@
-package blockchain
+package pow
 
 import (
 	"crypto/sha256"
@@ -27,7 +27,7 @@ type block struct {
 }
 
 //生成区块的哈希值
-func GenerateFirstBlock(data string) block{
+func GenerateFirstBlock(data string) block {
 	var firstblock block
 	firstblock.PreHash = "0"
 	firstblock.TimeStamp = time.Now().String()
