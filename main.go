@@ -1,6 +1,6 @@
 package main
 
-import "example/study/blockchain/pos"
+import "example/plugin/urfave"
 
 func main() {
 	//contextsty.ContextWithCancelDemo()
@@ -9,6 +9,11 @@ func main() {
 	//vipersty.Demo3()
 
 	//pow.DoTestPow_1()
-	pos.DoTestPos_1()
-}
+	//pos.DoTestPos_1()
+	//cgo.CgoTest01()
+
+   //urfave.Demo1()
+   urfave.Demo2()
+
+ }
 
