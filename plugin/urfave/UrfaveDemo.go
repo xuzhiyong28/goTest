@@ -90,6 +90,7 @@ func Demo2(){
 				return nil
 			},
 		},
+		//下面整个是模拟filecoin的代码的，没什么用
 		{
 			Name: "pre-seal",
 			Flags: []cli.Flag {
