@@ -3,6 +3,7 @@ package contextsty
 import (
 	"context"
 	"fmt"
+	"sync"
 	"time"
 )
 
@@ -55,3 +56,40 @@ func ContextWithTimeOutDemo(){
 	time.Sleep(10 * time.Second)
 	cancel() // 3秒后将提前取消 doSth goroutine
 }
+
+
+// waitGroup使用，类似于java的 CountDownLatch
+// 并发不安全
+func WaitGroupDemo0(){
+	counter := 0
+	var wg sync.WaitGroup
+	for i := 0 ; i < 1000 ; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			counter++
+		}()
+	}
+	wg.Wait()
+	fmt.Println(counter) //结果会得到不同的值
+}
+
+//并发安全
+func WaitGroupDemo1(){
+	counter := 0
+	var wg sync.WaitGroup
+	var lock sync.Mutex
+	for i := 0 ; i < 1000 ; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			defer lock.Unlock()
+			lock.Lock()
+			counter++
+		}()
+	}
+	wg.Wait()
+	fmt.Println(counter)
+}
+
+

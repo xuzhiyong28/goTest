@@ -9,3 +9,8 @@ func TestContextWithCancelDemo(t *testing.T) {
 func TestContextWithTimeOutDemo(t *testing.T) {
 	ContextWithTimeOutDemo()
 }
+
+func TestWaitGroupDemo(t *testing.T) {
+	WaitGroupDemo0()
+	WaitGroupDemo1()
+}
