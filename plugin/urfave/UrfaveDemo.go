@@ -17,7 +17,7 @@ func Demo1(){
 		fmt.Println("BOOM!")
 		return nil
 	}
-	err := app.Run(os.Args);
+	err := app.Run(os.Args)
 	if err != nil {
 		fmt.Println(err)
 	}

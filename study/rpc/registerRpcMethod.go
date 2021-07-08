@@ -7,6 +7,7 @@ type HelloServiceInterface = interface {
 	Hello(request string, reply *string) error
 }
 
+// rpc服务2
 type DoServiceInterface = interface {
 	Do(request string, reply *string) error
 }
