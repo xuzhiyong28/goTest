@@ -3,6 +3,9 @@ package gopsutil
 import (
 	"fmt"
 	"github.com/shirou/gopsutil/cpu"
+	"github.com/shirou/gopsutil/host"
+	"github.com/shirou/gopsutil/load"
+	"github.com/shirou/gopsutil/mem"
 	"time"
 )
 //http://godoc.org/github.com/shirou/gopsutil
@@ -28,4 +31,23 @@ func Demo2(){
 			}
 		}
 	}
+}
+
+
+func Demo3(){
+	//查看CPU负载
+	avg, _ := load.Avg()
+	fmt.Println(avg)
+}
+
+// 内存信息
+func Demo4(){
+	memory, _ := mem.VirtualMemory()
+	fmt.Println(memory)
+}
+
+// host info
+func Demo5() {
+	hInfo, _ := host.Info()
+	fmt.Printf("host info:%v uptime:%v boottime:%v\n", hInfo, hInfo.Uptime, hInfo.BootTime)
 }
