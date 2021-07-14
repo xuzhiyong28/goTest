@@ -36,6 +36,11 @@ func ContextWithCancelDemo() {
 	fmt.Println("end.")
 }
 
+
+
+/***
+ 超时的Context
+ */
 func ContextWithTimeOutDemo(){
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	go func(ctx context.Context) {
