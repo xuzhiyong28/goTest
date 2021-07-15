@@ -62,6 +62,29 @@ func ContextWithTimeOutDemo(){
 	cancel() // 3秒后将提前取消 doSth goroutine
 }
 
+/***
+WithDeadline函数跟WithTimeout很相近,只是WithDeadline设置的是一个时间点.
+ */
+func ContextWithDeadlineDemo(){
+	dlCtx, cancel := context.WithDeadline(context.Background(), time.Now().Add(time.Second*3))
+	go func(ctx context.Context) {
+		for {
+			select {
+				case <- ctx.Done():
+					fmt.Println("get message to quit")
+				default:
+					fmt.Println(" is running", time.Now().String())
+					time.Sleep(time.Second)
+			}
+		}
+	}(dlCtx)
+	//模拟程序运行 - Sleep 10秒
+	time.Sleep(10 * time.Second)
+	cancel()
+}
+
+
+
 
 // waitGroup使用，类似于java的 CountDownLatch
 // 并发不安全

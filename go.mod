@@ -8,6 +8,7 @@ require (
 	github.com/bwmarrin/snowflake v0.3.0 // indirect
 	github.com/chenhg5/collection v0.0.0-20200925143926-f403b87088f9 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/docker/go-units v0.4.0
 	github.com/filecoin-project/go-address v0.0.5
 	github.com/filecoin-project/go-state-types v0.1.1-0.20210506134452-99b279731c48

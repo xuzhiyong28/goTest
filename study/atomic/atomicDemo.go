@@ -18,6 +18,5 @@ func Demo1(){
 	}
 	wg.Wait()
 	fmt.Println(count)
-
 }
 
