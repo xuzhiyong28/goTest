@@ -20,6 +20,7 @@ require (
 	github.com/jinzhu/gorm v1.9.16 // indirect
 	github.com/jmoiron/sqlx v1.3.1
 	github.com/panjf2000/ants/v2 v2.4.6 // indirect
+	github.com/pkg/profile v1.6.0 // indirect
 	github.com/shirou/gopsutil v3.21.6+incompatible // indirect
 	github.com/spf13/cobra v1.0.0
 	github.com/spf13/viper v1.7.0
@@ -29,6 +30,7 @@ require (
 	go.uber.org/fx v1.13.1 // indirect
 	go.uber.org/zap v1.16.0
 	google.golang.org/grpc v1.39.0 // indirect
+	google.golang.org/protobuf v1.26.0 // indirect
 	gopkg.in/ini.v1 v1.62.0 // indirect
 	gopkg.in/yaml.v2 v2.2.8 // indirect
 )
