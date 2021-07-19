@@ -32,8 +32,14 @@ func Demo1() {
 
 }
 
-
+/***
+大数相加
+ */
 func Demo2(){
-	rat := big.NewRat(123, 2)
-	fmt.Println(rat.String())
+	a, _ := big.NewInt(0).SetString("9122322238215458478512545454878168716584545412154785452142499999", 10)
+	fmt.Println(a)
+	b := big.NewInt(2)
+	fmt.Println(b)
+	c := b.Add(a,b)
+	fmt.Println(c)
 }

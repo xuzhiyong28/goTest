@@ -19,6 +19,7 @@ require (
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/jinzhu/gorm v1.9.16 // indirect
 	github.com/jmoiron/sqlx v1.3.1
+	github.com/panjf2000/ants/v2 v2.4.6 // indirect
 	github.com/shirou/gopsutil v3.21.6+incompatible // indirect
 	github.com/spf13/cobra v1.0.0
 	github.com/spf13/viper v1.7.0
