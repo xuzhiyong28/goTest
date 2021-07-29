@@ -2,12 +2,13 @@ package server
 
 import (
 	"context"
-	pb "example/project/go-grpc-example/proto"
 	"fmt"
 	"google.golang.org/grpc"
 	"io"
 	"log"
 	"net"
+
+	pb "example/project/go-grpc-example/proto"
 )
 
 const (
@@ -30,8 +31,6 @@ func DemoServer1() {
 	}
 	server.Serve(lis)
 }
-
-
 
 //实现StreamServiceServer接口
 type StreamService struct{}
