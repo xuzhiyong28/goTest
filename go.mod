@@ -20,6 +20,7 @@ require (
 	github.com/golang/protobuf v1.5.2
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/jinzhu/gorm v1.9.16
+	github.com/json-iterator/go v1.1.10 // indirect
 	github.com/lib/pq v1.2.0 // indirect
 	github.com/mattn/go-sqlite3 v1.14.6 // indirect
 	github.com/panjf2000/ants/v2 v2.4.6
