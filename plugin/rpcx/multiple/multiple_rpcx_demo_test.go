@@ -2,8 +2,8 @@ package multiple
 
 import (
 	"fmt"
-	"math/rand"
 	"testing"
+	"time"
 )
 
 func TestServiceDemo1(t *testing.T) {
@@ -16,7 +16,13 @@ func TestClientDemo1(t *testing.T) {
 
 
 func TestOther(t *testing.T) {
-	var challenge [32]byte
-	rand.Read(challenge[:])
-	fmt.Println(challenge)
+	var stopCh chan struct{}
+	stopCh = make(chan struct{})
+	go func(c <-chan struct{}) {
+		fmt.Println("ready1")
+		<-c //get
+		fmt.Println("ready2")
+	}(stopCh)
+	close(stopCh)
+	time.Sleep(10 * time.Second)
 }
