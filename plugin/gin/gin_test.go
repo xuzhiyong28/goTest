@@ -1,8 +1,12 @@
 package gin
 
 import (
+	"example/plugin/gin/proto"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
+	"github.com/go-playground/validator/v10"
+	"io"
 	"net/http"
 	"os"
 	"runtime"
@@ -213,10 +217,9 @@ func TestStructResponseDemo(t *testing.T) {
 		c.YAML(http.StatusOK, gin.H{"name": "zhangsan"})
 	})
 
-
 	// protobuf格式,谷歌开发的高效存储读取的工具
-	r.GET("/someProtoBuf" , func(c *gin.Context) {
-		person := &Person{
+	r.GET("/someProtoBuf", func(c *gin.Context) {
+		person := &proto.Person{
 			Name:  "Jack",
 			Age:   18,
 			Hobby: []string{"sing", "dance", "basketball", "rap"},
@@ -233,7 +236,6 @@ func TestStructResponseDemo(t *testing.T) {
 	}
 	s.ListenAndServe()
 }
-
 
 func TestHtmlResponseDemo(t *testing.T) {
 	r := gin.Default()
@@ -252,7 +254,7 @@ func TestHtmlResponseDemo(t *testing.T) {
 	s.ListenAndServe()
 }
 
-func TestRedirectDemo(t *testing.T){
+func TestRedirectDemo(t *testing.T) {
 	// 重定向
 	r := gin.Default()
 	r.GET("/index", func(c *gin.Context) {
@@ -268,6 +270,198 @@ func TestRedirectDemo(t *testing.T){
 	s.ListenAndServe()
 }
 
+// 注册中间件 - 所有请求都经过此中间件
+func TestUseAllDemo(t *testing.T) {
+	r := gin.Default()
+	// 注册中间件
+	r.Use(func(c *gin.Context) {
+		t := time.Now()
+		fmt.Println("中间件开始执行了")
+		// 设置变量到Context的key中，可以通过Get()取
+		c.Set("request", "中间件")
+		status := c.Writer.Status()
+		fmt.Println("中间件执行完毕", status)
+		t2 := time.Since(t)
+		fmt.Println("time:", t2)
+	})
+
+	// 额外用{}括起来没什么意思，只是为了规范
+	{
+		r.GET("/ce", func(c *gin.Context) {
+			req, exists := c.Get("request")
+			if exists {
+				fmt.Println("request:", req)
+				c.JSON(http.StatusOK, gin.H{"request": req})
+			}
+		})
+	}
+
+	s := &http.Server{
+		Addr:           ":8080",
+		Handler:        r,
+		ReadTimeout:    10 * time.Second,
+		WriteTimeout:   10 * time.Second,
+		MaxHeaderBytes: 1 << 20,
+	}
+	s.ListenAndServe()
+}
+
+func TestUsePartDemo(t *testing.T) {
+	r := gin.Default()
+	midFun := func(c *gin.Context) {
+		t := time.Now()
+		fmt.Println("中间件开始执行了")
+		// 设置变量到Context的key中，可以通过Get()取
+		c.Set("request", "中间件")
+		// 执行函数
+		c.Next()
+		// 中间件执行完后续的一些事情
+		status := c.Writer.Status()
+		fmt.Println("中间件执行完毕", status)
+		t2 := time.Since(t)
+		fmt.Println("time:", t2)
+	}
+	r.GET("/ce", midFun, func(c *gin.Context) {
+		// 取值
+		req, _ := c.Get("request")
+		fmt.Println("request:", req)
+		// 页面接收
+		c.JSON(200, gin.H{"request": req})
+	})
+	s := &http.Server{
+		Addr:           ":8080",
+		Handler:        r,
+		ReadTimeout:    10 * time.Second,
+		WriteTimeout:   10 * time.Second,
+		MaxHeaderBytes: 1 << 20,
+	}
+	s.ListenAndServe()
+}
+
+func TestCookieBaseDemo(t *testing.T) {
+	r := gin.Default()
+	r.GET("/cookie", func(c *gin.Context) {
+		cookie, err := c.Cookie("key_cookie")
+		if err != nil {
+			cookie = "NotSet"
+			// 给客户端设置cookie
+			// maxAge int, 单位为秒
+			// path,cookie所在目录
+			// domain string,域名
+			// secure 是否智能通过https访问
+			// httpOnly bool  是否允许别人通过js获取自己的cookie
+			c.SetCookie("key_cookie", "value_cookie", 60, "/",
+				"localhost", false, true)
+		}
+		fmt.Printf("cookie的值是： %s\n", cookie)
+	})
+	s := &http.Server{
+		Addr:           ":8080",
+		Handler:        r,
+		ReadTimeout:    10 * time.Second,
+		WriteTimeout:   10 * time.Second,
+		MaxHeaderBytes: 1 << 20,
+	}
+	s.ListenAndServe()
+}
+
+// 模拟实现权限验证中间件
+// 有2个路由，login和home
+// login用于设置cookie
+// home是访问查看信息的请求
+// 在请求home之前，先跑中间件代码，检验是否存在cookie
+func TestCookieProjectDemo(t *testing.T) {
+	r := gin.Default()
+	r.GET("/login", func(c *gin.Context) {
+		c.SetCookie("abc", "123", 60, "/", "localhost", false, true)
+		c.String(http.StatusOK, "Login success !")
+	})
+
+	AuthMidUse := func(c *gin.Context) {
+		if cookie, err := c.Cookie("abc"); err == nil {
+			if cookie == "123" {
+				c.Next()
+				return
+			}
+		}
+		// 返回错误
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "err"})
+		// 若验证不通过，不再调用后续的函数处理
+		c.Abort()
+		return
+	}
+	r.GET("/home", AuthMidUse, func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"data": "home"})
+	})
+
+	s := &http.Server{
+		Addr:           ":8080",
+		Handler:        r,
+		ReadTimeout:    10 * time.Second,
+		WriteTimeout:   10 * time.Second,
+		MaxHeaderBytes: 1 << 20,
+	}
+	s.ListenAndServe()
+}
+
+type People struct {
+	Age int `form:"age" binding:"required,gt=10"`
+	// 2、在参数 binding 上使用自定义的校验方法函数注册时候的名称
+	Name    string `form:"name" binding:"NotNullAndAdmin"`
+	Address string `form:"address" binding:"required"`
+}
+
+/*
+   curl -X GET "http://127.0.0.1:8080/testing?name=&age=12&address=beijing"
+   curl -X GET "http://127.0.0.1:8080/testing?name=lmh&age=12&address=beijing"
+   curl -X GET "http://127.0.0.1:8080/testing?name=adz&age=12&address=beijing"
+*/
+func TestValidatorDemo(t *testing.T) {
+	r := gin.Default()
+	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
+		v.RegisterValidation("NotNullAndAdmin", func(fl validator.FieldLevel) bool {
+			fmt.Println(fl)
+			return true
+		})
+	}
+	r.GET("/5lmh", func(c *gin.Context) {
+		var person proto.Person
+		if e := c.ShouldBind(&person); e == nil {
+			c.String(http.StatusOK, "%v", person)
+		} else {
+			c.String(http.StatusOK, "person bind err:%v", e.Error())
+		}
+	})
+	s := &http.Server{
+		Addr:           ":8080",
+		Handler:        r,
+		ReadTimeout:    10 * time.Second,
+		WriteTimeout:   10 * time.Second,
+		MaxHeaderBytes: 1 << 20,
+	}
+	s.ListenAndServe()
+}
+
+
+func TestLogDemo(t *testing.T){
+	gin.DisableConsoleColor()
+	f , _ := os.Create(createPathFile("gin.log"))
+	gin.DefaultWriter = io.MultiWriter(f)
+	// 如果需要同时将日志写入文件和控制台，请使用以下代码。
+	// gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
+	r := gin.Default()
+	r.GET("/ping", func(c *gin.Context) {
+		c.String(200, "pong")
+	})
+	s := &http.Server{
+		Addr:           ":8080",
+		Handler:        r,
+		ReadTimeout:    10 * time.Second,
+		WriteTimeout:   10 * time.Second,
+		MaxHeaderBytes: 1 << 20,
+	}
+	s.ListenAndServe()
+}
 
 func createPathFile(fileName string) string {
 	path, _ := os.Getwd()

@@ -1,5 +1,5 @@
 syntax = "proto3"; //必须指定protobuf协议版本号
-package gin; //包名
+package proto; //包名
 
 option go_package = "./";
 
