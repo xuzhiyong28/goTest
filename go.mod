@@ -9,11 +9,13 @@ require (
 	github.com/chenhg5/collection v0.0.0-20200925143926-f403b87088f9
 	github.com/coreos/etcd v3.3.25+incompatible // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
+	github.com/dchest/captcha v0.0.0-20200903113550-03f5f0333e1f // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/docker/go-units v0.4.0
 	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/filecoin-project/go-address v0.0.5
 	github.com/filecoin-project/go-state-types v0.1.1-0.20210506134452-99b279731c48
+	github.com/gin-contrib/sessions v0.0.3 // indirect
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-ole/go-ole v1.2.5 // indirect
 	github.com/go-playground/validator/v10 v10.2.0 // indirect
