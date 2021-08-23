@@ -15,13 +15,13 @@ func Demo1() {
 		fx.Provide(NewMyConstruct, NewHandler, NewMux, NewLogger),                            // 构造函数
 		fx.Invoke(invokeNothingUse, invokeRegister, invokeAnotherFunc, invokeUseMyconstruct), // 初始化函数
 	)
-	startCtx, cancel := context.WithTimeout(context.Background(), 15 * time.Second)
+	startCtx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 	if err := app.Start(startCtx); err != nil {
 		log.Fatal(err)
 	}
 	http.Get("http://localhost:8080/")
-	stopCtx, cancel := context.WithTimeout(context.Background(), 15 * time.Second)
+	stopCtx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 	if err := app.Stop(stopCtx); err != nil {
 		log.Fatal(err)
@@ -88,12 +88,16 @@ func NewMux(lc fx.Lifecycle, logger *log.Logger) *http.ServeMux {
 }
 
 // 自定义类型
-type mystruct struct{}
+type mystruct struct {
+	Name string
+}
 
 // mystruct 构造函数
 func NewMyConstruct(logger *log.Logger) mystruct {
 	logger.Println("Executing NewMyConstruct.")
-	return mystruct{}
+	return mystruct{
+		Name: "xuzhiyong",
+	}
 }
 
 // invokeUseMyconstruct 是invoke函数，在其执行之前，需要执行 NewMyConstruct

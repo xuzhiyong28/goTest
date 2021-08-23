@@ -22,7 +22,7 @@ require (
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/golang/protobuf v1.5.2
 	github.com/google/uuid v1.3.0 // indirect
-	github.com/jinzhu/gorm v1.9.16
+	github.com/jmoiron/sqlx v1.3.4 // indirect
 	github.com/json-iterator/go v1.1.10 // indirect
 	github.com/lib/pq v1.2.0 // indirect
 	github.com/mattn/go-sqlite3 v1.14.6 // indirect
@@ -44,5 +44,8 @@ require (
 	google.golang.org/grpc v1.39.0 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/ini.v1 v1.62.0
+	gorm.io/driver/mysql v1.1.2 // indirect
+	gorm.io/driver/sqlite v1.1.4 // indirect
+	gorm.io/gorm v1.21.13 // indirect
 	sigs.k8s.io/yaml v1.2.0 // indirect
 )
