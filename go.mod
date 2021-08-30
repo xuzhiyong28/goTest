@@ -40,6 +40,7 @@ require (
 	go.uber.org/fx v1.13.1
 	go.uber.org/zap v1.16.0 // indirect
 	golang.org/x/net v0.0.0-20210716203947-853a461950ff // indirect
+	golang.org/x/time v0.0.0-20210723032227-1f47c861a9ac // indirect
 	google.golang.org/genproto v0.0.0-20210719143636-1d5a45f8e492 // indirect
 	google.golang.org/grpc v1.39.0 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
