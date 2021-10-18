@@ -65,4 +65,5 @@ require (
 	gorm.io/driver/sqlite v1.1.4 // indirect
 	gorm.io/gorm v1.21.13 // indirect
 	sigs.k8s.io/yaml v1.2.0 // indirect
+	github.com/RichardKnop/machinery v1.7.4
 )
