@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	github.com/PuerkitoBio/goquery v1.7.0
+	github.com/RichardKnop/machinery v1.7.4
 	github.com/StackExchange/wmi v0.0.0-20210224194228-fe8f1750fd46 // indirect
 	github.com/armon/consul-api v0.0.0-20180202201655-eb2c6b5be1b6 // indirect
 	github.com/bwmarrin/snowflake v0.3.0
@@ -34,6 +35,7 @@ require (
 	github.com/ipfs/go-log/v2 v2.0.1 // indirect
 	github.com/jmoiron/sqlx v1.3.4 // indirect
 	github.com/jonboulle/clockwork v0.1.0 // indirect
+	github.com/julienschmidt/httprouter v1.3.0 // indirect
 	github.com/lib/pq v1.2.0 // indirect
 	github.com/mattn/go-sqlite3 v1.14.6 // indirect
 	github.com/panjf2000/ants/v2 v2.4.6
@@ -65,5 +67,4 @@ require (
 	gorm.io/driver/sqlite v1.1.4 // indirect
 	gorm.io/gorm v1.21.13 // indirect
 	sigs.k8s.io/yaml v1.2.0 // indirect
-	github.com/RichardKnop/machinery v1.7.4
 )
