@@ -12,7 +12,8 @@ func TestDemo1(t *testing.T) {
 	start := time.Now()
 	for i := 0; i < 10; i++ {
 		body := fetch("https://movie.douban.com/top250?start=" + strconv.Itoa(25*i))
-		parseBody(body)
+		//parseBody(body)
+		parseBodyByGoQuery(body)	// 采用第三方库解析
 	}
 	elapsed := time.Since(start)
 	fmt.Printf("Took %s", elapsed)

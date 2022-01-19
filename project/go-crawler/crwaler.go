@@ -2,6 +2,7 @@ package go_crawler
 
 import (
 	"fmt"
+	"github.com/PuerkitoBio/goquery"
 	"io/ioutil"
 	"net/http"
 	"regexp"
@@ -9,8 +10,9 @@ import (
 )
 
 /***
-	获取top250
- */
+爬虫 https://strconv.com/page/2/
+获取top250
+*/
 func fetch(url string) string {
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", url, nil)
@@ -34,8 +36,8 @@ func fetch(url string) string {
 }
 
 /***
-	解析body
- */
+解析body
+*/
 func parseBody(body string) {
 	body = strings.Replace(body, "\n", "", -1)
 	rp := regexp.MustCompile(`<div class="hd">(.*?)</div>`)
@@ -46,4 +48,15 @@ func parseBody(body string) {
 		fmt.Println(idRe.FindStringSubmatch(item[1])[1],
 			titleRe.FindStringSubmatch(item[1])[1])
 	}
+}
+
+func parseBodyByGoQuery(body string) {
+	doc, err := goquery.NewDocumentFromReader(strings.NewReader(body))
+	if err != nil {
+		fmt.Println(err)
+	}
+	doc.Find("ol.grid_view li").Find(".hd").Each(func(index int, ele *goquery.Selection) {
+		movieUrl, _ := ele.Find("a").Attr("href")
+		fmt.Println(strings.Split(movieUrl, "/")[4], ele.Find(".title").Eq(0).Text())
+	})
 }
