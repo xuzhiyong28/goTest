@@ -59,3 +59,18 @@ func genTestingPairs(number int) []Pair {
 	}
 	return testCases
 }
+
+func genNoRepetitiveTestingPairs(number int) []Pair {
+	testCases := make([]Pair, number)
+	m := make(map[string]struct{})
+	var p Pair
+	for i := 0; i < number; i++ {
+		p, _ = NewPair(randString(), randElement())
+		if _, ok := m[p.Key()]; !ok {
+			testCases[i] = p
+			m[p.Key()] = struct{}{}
+			break
+		}
+	}
+	return testCases
+}

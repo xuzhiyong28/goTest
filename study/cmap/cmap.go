@@ -1,5 +1,10 @@
 package cmap
 
+import (
+	"math"
+	"sync/atomic"
+)
+
 // 接口
 type ConcurrentMap interface {
 	// Concurrency 会返回并发量。
@@ -28,23 +33,56 @@ type myConcurrentMap struct {
 }
 
 func (cmap *myConcurrentMap) Concurrency() int {
-	panic("implement me")
+	return cmap.concurrency
 }
 
 func (cmap *myConcurrentMap) Put(key string, element interface{}) (bool, error) {
-	panic("implement me")
+	p, err := NewPair(key, element)
+	if err != nil {
+		return false, err
+	}
+	s := cmap.findSegment(p.Hash())
+	ok, err := s.Put(p)
+	if ok {
+		atomic.AddUint64(&cmap.total, 1)
+	}
+	return ok, err
 }
 
 func (cmap *myConcurrentMap) Get(key string) interface{} {
-	panic("implement me")
+	keyHash := hash(key)
+	s := cmap.findSegment(keyHash)
+	pair := s.GetWithHash(key, keyHash)
+	if pair == nil {
+		return nil
+	}
+	return pair.Element()
 }
 
 func (cmap *myConcurrentMap) Delete(key string) bool {
-	panic("implement me")
+	s := cmap.findSegment(hash(key))
+	if s.Delete(key) {
+		atomic.AddUint64(&cmap.total, ^uint64(0))
+		return true
+	}
+	return false
 }
 
 func (cmap *myConcurrentMap) Len() uint64 {
-	panic("implement me")
+	return atomic.LoadUint64(&cmap.total)
+}
+
+func (cmap *myConcurrentMap) findSegment(keyHash uint64) Segment {
+	if cmap.concurrency == 1 {
+		return cmap.segments[0]
+	}
+	var keyHash32 uint32
+	if keyHash > math.MaxUint32 {
+		keyHash32 = uint32(keyHash >> 32)
+	} else {
+		keyHash32 = uint32(keyHash)
+	}
+	return cmap.segments[int(keyHash32>>16)%(cmap.concurrency-1)]
 }
 
 func NewConcurrentMap(concurrency int, pairRedistributor PairRedistributor) (ConcurrentMap, error) {

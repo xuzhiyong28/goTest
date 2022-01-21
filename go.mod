@@ -36,6 +36,7 @@ require (
 	github.com/jmoiron/sqlx v1.3.4 // indirect
 	github.com/jonboulle/clockwork v0.1.0 // indirect
 	github.com/julienschmidt/httprouter v1.3.0 // indirect
+	github.com/k0kubun/go-ansi v0.0.0-20180517002512-3bf9e2903213 // indirect
 	github.com/lib/pq v1.2.0 // indirect
 	github.com/mattn/go-sqlite3 v1.14.6 // indirect
 	github.com/panjf2000/ants/v2 v2.4.6
@@ -44,6 +45,7 @@ require (
 	github.com/pkg/profile v1.6.0
 	github.com/prometheus/tsdb v0.7.1 // indirect
 	github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475 // indirect
+	github.com/schollz/progressbar/v3 v3.8.5 // indirect
 	github.com/shirou/gopsutil v3.21.6+incompatible
 	github.com/smallnest/rpcx v1.6.5 // indirect
 	github.com/spf13/cobra v1.2.1 // indirect
