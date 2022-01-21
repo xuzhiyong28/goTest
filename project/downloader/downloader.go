@@ -1,7 +1,9 @@
 package downloader
-
+// 并发下载 ： https://www.toutiao.com/a6981627226177716774/?channel=&source=search_tab
 import (
 	"fmt"
+	"github.com/k0kubun/go-ansi"
+	"github.com/schollz/progressbar/v3"
 	"io"
 	"log"
 	"net/http"
@@ -9,10 +11,7 @@ import (
 	"path"
 	"strings"
 	"sync"
-	"github.com/k0kubun/go-ansi"
-	"github.com/schollz/progressbar/v3"
 )
-
 type Downloader struct {
 	concurrency int
 	resume      bool
@@ -57,15 +56,14 @@ func (d *Downloader) multiDownload(strURL, filename string, contentLen int) erro
 	rangeStart := 0
 
 	for i := 0; i < d.concurrency; i++ {
+		// 并发下载
 		go func(i, rangeStart int) {
 			defer wg.Done()
-
 			rangeEnd := rangeStart + partSize
 			// 最后一部分，总长度不能超过 ContentLength
 			if i == d.concurrency-1 {
 				rangeEnd = contentLen
 			}
-
 			downloaded := 0
 			if d.resume {
 				partFileName := d.getPartFilename(filename, i)
