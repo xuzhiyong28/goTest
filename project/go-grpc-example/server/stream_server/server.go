@@ -1,38 +1,13 @@
-package server
+package main
 
 import (
-	"context"
-	"fmt"
+	pb "example/project/go-grpc-example/proto"
 	"google.golang.org/grpc"
 	"io"
 	"log"
 	"net"
-
-	pb "example/project/go-grpc-example/proto"
 )
 
-const (
-	PORT        = "9001"
-	PORT_STREAM = "9002"
-)
-
-type SearchService struct{}
-
-func (s *SearchService) Search(ctx context.Context, r *pb.SearchRequest) (*pb.SearchResponse, error) {
-	return &pb.SearchResponse{Response: r.GetRequest() + " Server"}, nil
-}
-
-func DemoServer1() {
-	server := grpc.NewServer()
-	pb.RegisterSearchServiceServer(server, &SearchService{})
-	lis, err := net.Listen("tcp", ":"+PORT)
-	if err != nil {
-		fmt.Printf("net.Listen err: %v", err)
-	}
-	server.Serve(lis)
-}
-
-//实现StreamServiceServer接口
 type StreamService struct{}
 
 func (s *StreamService) List(r *pb.StreamRequest, stream pb.StreamService_ListServer) error {
@@ -88,10 +63,11 @@ func (s *StreamService) Route(stream pb.StreamService_RouteServer) error {
 	return nil
 }
 
-func DemoServer2() {
+func main() {
 	server := grpc.NewServer()
 	pb.RegisterStreamServiceServer(server, &StreamService{})
-	lis, err := net.Listen("tcp", ":"+PORT_STREAM)
+
+	lis, err := net.Listen("tcp", ":9002")
 	if err != nil {
 		log.Fatalf("net.Listen err: %v", err)
 	}
