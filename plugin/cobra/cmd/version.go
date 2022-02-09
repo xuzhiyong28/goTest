@@ -16,16 +16,6 @@ var versionCmd = &cobra.Command {
 	},
 }
 
-
-var cloneCmd = &cobra.Command{
-	Use: "clone",
-	Short: "clone github",
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Fprint(os.Stdout, "git clone.......")
-	},
-}
-
 func init() {
 	rootCmd.AddCommand(versionCmd)
-	rootCmd.AddCommand(cloneCmd)
 }
