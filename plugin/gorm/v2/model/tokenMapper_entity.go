@@ -1,6 +1,10 @@
 package model
 
-import "time"
+import (
+	"fmt"
+	"gorm.io/gorm"
+	"time"
+)
 
 type TokenMappers []TokenMapper
 
@@ -20,4 +24,25 @@ type TokenMapper struct {
 
 func (tm *TokenMapper) TableName() string {
 	return "token_mapper"
+}
+
+
+// 钩子方法
+// 创建之前执行
+func (t *TokenMapper) BeforeCreate(tx *gorm.DB) (err error) {
+	fmt.Println("==BeforeCreate==")
+	return nil
+}
+
+// 钩子方法
+// 创建之后执行
+func (t *TokenMapper) AfterCreate(tx *gorm.DB) (err error) {
+	fmt.Println("==AfterCreate==")
+	return nil
+}
+
+// 钩子方法
+// 查询后执行
+func (t *TokenMapper) AfterFind(tx *gorm.DB) (err error) {
+	return nil
 }
