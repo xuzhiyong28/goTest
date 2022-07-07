@@ -112,7 +112,49 @@ func TestDemo6(t *testing.T) {
 			}
 			fmt.Printf("Received:%v\n", e)
 		case <-timer.C:
-				fmt.Println("Timeout!")
+			fmt.Println("Timeout!")
 		}
+	}
+}
+
+// 错误示范1 ： 在channel关闭时再从channel获取数据会获取到空值
+func TestDemo7(t *testing.T) {
+	wg := sync.WaitGroup{}
+	ch := make(chan int, 10)
+	for i := 0; i < 10; i++ {
+		ch <- i
+	}
+	close(ch)
+	wg.Add(3)
+	for j := 0; j < 3; j++ {
+		go func() {
+			for {
+				task := <-ch // 如果ch关闭了，这里还能获取到值，只是是类型的默认值，他并不会停止运行
+				// 正确做法，需要判断是否关闭
+				//task , ok := <-ch
+				//if !ok {
+				//	break
+				//}
+				fmt.Println(task)
+			}
+			wg.Done()
+		}()
+	}
+	wg.Wait()
+}
+
+// channel泄露
+// 由于 select 命中了超时逻辑，导致通道没有消费者（无接收操作），而其定义的通道为无缓冲通道，因此 goroutine 中的ch <- "job result"操作会一直阻塞，最终导致 goroutine 泄露。
+func TestDemo8(t *testing.T) {
+	ch := make(chan string)
+	go func() {
+		time.Sleep(3 * time.Second)
+		ch <- "job result"
+	}()
+	select {
+	case result := <-ch:
+		fmt.Println(result)
+	case <-time.After(time.Second): // 较小的超时时间
+		return
 	}
 }

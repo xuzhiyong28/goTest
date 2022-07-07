@@ -61,3 +61,12 @@ func TestDemo4(t *testing.T) {
 	var countVal atomic.Value
 	countVal.Store([]int{1,3,5,7,9})
 }
+
+
+func TestDemo5(t *testing.T) {
+	ch := make(chan int)
+	for num := range ch {
+		fmt.Println("num = ", num)
+	}
+}
+
