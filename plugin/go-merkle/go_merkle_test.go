@@ -1,42 +1,32 @@
 package go_merkle
 
 import (
-	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
-	"github.com/xsleonard/go-merkle"
-	"io/ioutil"
+	"github.com/ethereum/go-ethereum/common"
 	"testing"
 )
 
-func splitData(data []byte, size int) [][]byte {
-	count := len(data) / size
-	blocks := make([][]byte, 0, count)
-	for i := 0; i < count; i++ {
-		block := data[i*size : (i+1)*size]
-		blocks = append(blocks, block)
-	}
-	if len(data)%size != 0 {
-		blocks = append(blocks, data[len(blocks)*size:])
-	}
-	return blocks
+func makeDividendAccounts() []DividendAccount {
+	accounts := make([]DividendAccount, 0)
+	accounts = append(accounts, NewDividendAccount(common.HexToAddress("0x3F2E3dA83cbA1C2e128CAedeE7CeF6a8bF33C8dd"), "10000"))
+	accounts = append(accounts, NewDividendAccount(common.HexToAddress("0xeC7705Efe4A40B07fD8293F0b9Ba8E60554EBa0E"), "20000"))
+	accounts = append(accounts, NewDividendAccount(common.HexToAddress("0x16B0eC57e4308D2eD96Da643aB45973397Ceb980"), "30000"))
+	return accounts
 }
 
-func TestSplitData(t *testing.T) {
-	data, err := ioutil.ReadFile("testdata")
-	if err != nil {
-		fmt.Println(err)
-		return
+func TestRootHash(t *testing.T) {
+	accounts := makeDividendAccounts()
+	tree, err := GetAccountTree(accounts)
+	if err == nil {
+		fmt.Println(fmt.Sprintf("rootHash = %v", "0x"+hex.EncodeToString(tree.Root.Hash)))
 	}
-	blocks := splitData(data, 32)
-	tree := merkle.NewTree()
-	err = tree.Generate(blocks, sha256.New())
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	fmt.Printf("Height: %d\n", tree.Height())
-	fmt.Printf("Root: %v\n", tree.Root())
-	fmt.Printf("N Leaves: %v\n", len(tree.Leaves()))
-	fmt.Printf("Height 2: %v\n", tree.GetNodesAtHeight(2))
+}
 
+func TestAccountProof(t *testing.T) {
+	accounts := makeDividendAccounts()
+	proof, index, err := GetAccountProof(accounts, common.HexToAddress("0xeC7705Efe4A40B07fD8293F0b9Ba8E60554EBa0E"))
+	if err == nil {
+		fmt.Println(fmt.Sprintf("proof = %v, index = %v", "0x"+hex.EncodeToString(proof), index))
+	}
 }
