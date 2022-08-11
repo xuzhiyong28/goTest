@@ -92,6 +92,17 @@ func GetAccountProof(dividendAccounts []DividendAccount, userAddress common.Addr
 	return proof, index, err
 }
 
+func VerifyAccountProof(dividendAccounts []DividendAccount, userAddr common.Address, proofToVerify string) (bool, error) {
+	proof, _, err := GetAccountProof(dividendAccounts, userAddr)
+	if err != nil {
+		return false, nil
+	}
+	if bytes.Equal(common.FromHex(proofToVerify), proof) {
+		return true, nil
+	}
+	return false, nil
+}
+
 func appendBytes32(data ...[]byte) []byte {
 	var result []byte
 	for _, v := range data {

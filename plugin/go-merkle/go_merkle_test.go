@@ -30,3 +30,4 @@ func TestAccountProof(t *testing.T) {
 		fmt.Println(fmt.Sprintf("proof = %v, index = %v", "0x"+hex.EncodeToString(proof), index))
 	}
 }
+
