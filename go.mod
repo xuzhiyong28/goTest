@@ -21,16 +21,18 @@ require (
 	github.com/filecoin-project/go-statemachine v1.0.1
 	github.com/gin-contrib/sessions v0.0.3
 	github.com/gin-gonic/gin v1.6.3
+	github.com/go-kit/kit v0.12.0
 	github.com/go-ole/go-ole v1.2.5 // indirect
 	github.com/go-playground/validator/v10 v10.2.0
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/golang/protobuf v1.5.2
 	github.com/google/uuid v1.3.0 // indirect
+	github.com/gorilla/mux v1.7.4
 	github.com/ipfs/go-datastore v0.4.4
 	github.com/ipfs/go-log/v2 v2.0.5
 	//github.com/ipfs/go-log/v2 v2.0.1
 	github.com/jmoiron/sqlx v1.3.4
-	github.com/json-iterator/go v1.1.11
+	github.com/json-iterator/go v1.1.12
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/k0kubun/go-ansi v0.0.0-20180517002512-3bf9e2903213
 	github.com/natefinch/lumberjack v2.0.0+incompatible
@@ -49,11 +51,10 @@ require (
 	github.com/tklauser/go-sysconf v0.3.7 // indirect
 	github.com/urfave/cli/v2 v2.2.0
 	go.uber.org/fx v1.13.1
-	go.uber.org/zap v1.17.0
+	go.uber.org/zap v1.19.1
 	golang.org/x/crypto v0.0.0-20211215153901-e495a2d5b3d3
 	golang.org/x/time v0.0.0-20210723032227-1f47c861a9ac
-	google.golang.org/genproto v0.0.0-20210719143636-1d5a45f8e492 // indirect
-	google.golang.org/grpc v1.39.0
+	google.golang.org/grpc v1.40.0
 	google.golang.org/grpc/examples v0.0.0-20220325165806-e63e1230fd01 // indirect
 	google.golang.org/protobuf v1.27.1
 	gopkg.in/ini.v1 v1.62.0
