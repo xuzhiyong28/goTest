@@ -5,16 +5,17 @@ import (
 	"sync"
 	"sync/atomic"
 	"testing"
+	"time"
 )
 
 func TestDemo1(t *testing.T) {
 	var count uint64
 	var wg sync.WaitGroup
-	for i := 0 ; i < 10 ; i++ {
+	for i := 0; i < 10; i++ {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			atomic.AddUint64(&count,1)
+			atomic.AddUint64(&count, 1)
 		}()
 	}
 	wg.Wait()
@@ -56,12 +57,10 @@ func TestDemo3(t *testing.T) {
 	fmt.Printf("count : %v\n", c)
 }
 
-
 func TestDemo4(t *testing.T) {
 	var countVal atomic.Value
-	countVal.Store([]int{1,3,5,7,9})
+	countVal.Store([]int{1, 3, 5, 7, 9})
 }
-
 
 func TestDemo5(t *testing.T) {
 	ch := make(chan int)
@@ -70,3 +69,20 @@ func TestDemo5(t *testing.T) {
 	}
 }
 
+func TestDemo6(t *testing.T) {
+	newWorkCh := make(chan string)
+	go func() {
+		for {
+			select {
+			case req := <-newWorkCh:
+				time.Sleep(time.Second * 2)
+				fmt.Println(req)
+			}
+		}
+	}()
+	newWorkCh <- "1"
+	newWorkCh <- "2"
+	newWorkCh <- "3"
+	newWorkCh <- "4"
+	newWorkCh <- "5"
+}
