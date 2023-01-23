@@ -86,3 +86,10 @@ func TestDemo6(t *testing.T) {
 	newWorkCh <- "4"
 	newWorkCh <- "5"
 }
+
+func TestDemo7(t *testing.T) {
+	var a int64 = 10
+	b := &a // 去变量a的内存地址保存到b，b现在存的是一个指针值，所以他是指针类型
+	fmt.Printf("a的值:%d a的内存地址:%p\n", a, &a)
+	fmt.Printf("b的值:%p type:%T\n", b, b)
+}
