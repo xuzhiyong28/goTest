@@ -21,7 +21,7 @@ require (
 	github.com/docker/go-units v0.4.0
 	github.com/drand/drand v1.2.1
 	github.com/elastic/gosigar v0.8.1-0.20180330100440-37f05ff46ffa // indirect
-	github.com/ethereum/go-ethereum v1.10.25
+	github.com/ethereum/go-ethereum v1.10.26
 	github.com/filecoin-project/go-address v0.0.5
 	github.com/filecoin-project/go-state-types v0.1.1-0.20210506134452-99b279731c48
 	github.com/filecoin-project/go-statemachine v1.0.1

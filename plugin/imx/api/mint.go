@@ -2,7 +2,6 @@ package api
 
 import (
 	"encoding/json"
-	"github.com/ethereum/go-ethereum/crypto"
 )
 
 type TokenJson struct {
@@ -28,16 +27,6 @@ func (spo *SignaturePayloadObject) ToJsonStr() string {
 
 // 签名
 func (spo *SignaturePayloadObject) ImxSignature(privateKey string) (string, error) {
-	privateKeyEcdsa, err := crypto.HexToECDSA(privateKey)
-	if err != nil {
-		return "", err
-	}
-	msg := crypto.Keccak256([]byte(spo.ToJsonStr()))
-	sig, err := crypto.Sign(msg, privateKeyEcdsa)
-	if err == nil {
-		R, S, V := DecodeSignatureStr(sig)
-		str := R + S + V
-		return str, nil
-	}
+
 	return "", nil
 }
