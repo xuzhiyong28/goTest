@@ -50,11 +50,15 @@ func TestMintDemo1(t *testing.T) {
 	signer, _ := ethereum.NewSigner(privateKey, new(big.Int).SetInt64(5))
 	client := initializeSDK()
 	apiMintTokensRequest := client.MintsApi.MintTokens(context.Background())
+	token1 := api.NewMintTokenDataV2("3")
+	token1.SetBlueprint("3")
+	token2 := api.NewMintTokenDataV2("4")
+	token2.SetBlueprint("4")
 	mintRequest := api.NewMintRequest("", contractAddress, []api.MintUser{
 		{
 			Tokens: []api.MintTokenDataV2{
-				*api.NewMintTokenDataV2("3"),
-				*api.NewMintTokenDataV2("4"),
+				*token1,
+				*token2,
 			},
 			User: userAddress,
 		},
