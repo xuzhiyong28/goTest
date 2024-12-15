@@ -26,3 +26,26 @@ func TestChildRun(t *testing.T) {
 		})
 	}
 }
+
+type Person struct {
+	name string
+	age  int8
+}
+
+func NewPerson(name string, age int8) *Person {
+	return &Person{
+		name: name,
+		age:  age,
+	}
+}
+
+func (p *Person) SetAge(newAge int8) {
+	p.age = newAge
+}
+
+func TestSlice(t *testing.T) {
+	p1 := NewPerson("小王子", 25)
+	fmt.Println(p1.age) // 25
+	p1.SetAge(30)
+	fmt.Println(p1.age) // 30
+}
